@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AOC2020", "AOC2020\AOC2020.csproj", "{2DB4F33B-10D4-49E6-A8A9-06F277888BF2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Days", "Days", "{0D08D478-42BC-4495-9BD5-EFE2DAE0886C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day_1", "Days\Day_1\Day_1.csproj", "{70C4AB73-2B3D-45AC-977D-956037C74772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{DBC398A4-DFBF-43A0-9E4C-A41119FAA8B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,20 @@ Global
 		{2DB4F33B-10D4-49E6-A8A9-06F277888BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DB4F33B-10D4-49E6-A8A9-06F277888BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DB4F33B-10D4-49E6-A8A9-06F277888BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70C4AB73-2B3D-45AC-977D-956037C74772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70C4AB73-2B3D-45AC-977D-956037C74772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70C4AB73-2B3D-45AC-977D-956037C74772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70C4AB73-2B3D-45AC-977D-956037C74772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBC398A4-DFBF-43A0-9E4C-A41119FAA8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBC398A4-DFBF-43A0-9E4C-A41119FAA8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBC398A4-DFBF-43A0-9E4C-A41119FAA8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBC398A4-DFBF-43A0-9E4C-A41119FAA8B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{70C4AB73-2B3D-45AC-977D-956037C74772} = {0D08D478-42BC-4495-9BD5-EFE2DAE0886C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6ECEB97-BCE7-4524-8478-583062A3D307}
