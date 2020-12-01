@@ -10,7 +10,7 @@ namespace AOC2020
     {
         public static List<Day> days = new()
             {
-                new Day_1(),
+                new Day_01(),
             };
         static void Main(string[] args)
         {

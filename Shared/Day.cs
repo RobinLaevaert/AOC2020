@@ -46,7 +46,8 @@ namespace AOC2020.Shared
         }
         public string GetFilePath()
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $@"input{DayNumber}.txt");
+            var path =  Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $@"input{DayNumber}.txt");
+            return path;
         }
         public abstract void ReadFile();
 

@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Days\Day_1\Day_1.csproj" />
+    <ProjectReference Include="..\Days\Day_02\Day_02.csproj" />
+    <ProjectReference Include="..\Days\Day_01\Day_01.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
