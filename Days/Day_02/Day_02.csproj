@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="input.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
