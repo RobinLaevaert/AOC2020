@@ -9,9 +9,10 @@ namespace AOC2020
     class Program
     {
         public static List<Day> days = new()
-            {
-                new Day_01(),
-            };
+        {
+            new Days.Day_01(),
+            new Days.Day_02()
+        };
         static void Main(string[] args)
         {
             while (true)

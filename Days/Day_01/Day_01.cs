@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace Days
 {
-    public class Day_1 : Day
+    public class Day_01 : Day
     {
         public List<int> input;
-        public Day_1()
+        public Day_01()
         {
             DayNumber = 1;
             Title = "Report Repair";
