@@ -20,8 +20,18 @@ namespace AOC2020
                 Console.WriteLine("Which Day do you want ?");
                 days.Where(x => x.Title != null).ToList().ForEach(x => x.PrintInfo());
                 var chosenDay = Convert.ToInt32(Console.ReadLine());
-                days.First(x => x.DayNumber == chosenDay).HandleSelect();
-                days.First(x => x.DayNumber == chosenDay).Deselect();
+                var day = days.FirstOrDefault(x => x.DayNumber == chosenDay);
+                if(day != null)
+                {
+                    day.HandleSelect();
+                    day.Deselect();
+                }
+                else
+                {
+                    Console.WriteLine("Day not found, Press Key to go back to main menu");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
             }
         }
     }

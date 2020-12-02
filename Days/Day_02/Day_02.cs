@@ -17,7 +17,6 @@ namespace Days
         }
         public override void Part1()
         {
-            ReadFile();
             var results = input.Select(x => x.Is_valid_part1());
             var count_valid_passwords = results.Count(x => x == true);
             Console.WriteLine($"Amount of correct passwords: {count_valid_passwords}");
@@ -25,7 +24,6 @@ namespace Days
 
         public override void Part2()
         {
-            ReadFile();
             var results = input.Select(x => x.Is_valid_part2());
             var count_valid_passwords = results.Count(x => x == true);
             Console.WriteLine($"Amount of correct passwords: {count_valid_passwords}");
