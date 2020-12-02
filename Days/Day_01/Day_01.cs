@@ -32,7 +32,7 @@ namespace Days
 
         public override void Gather_input()
         {
-            input = ReadFile().Select(int.Parse).ToList();
+            input = Read_file().Select(int.Parse).ToList();
         }
     }
 }

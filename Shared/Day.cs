@@ -61,7 +61,7 @@ namespace AOC2020.Shared
         }
 
         
-        protected IEnumerable<string> ReadFile()
+        public virtual IEnumerable<string> Read_file()
         {
             var resources = Assembly.GetCallingAssembly().GetManifestResourceNames().ToList();
             using Stream stream = Assembly.GetCallingAssembly().GetManifestResourceStream(resources.Single(x => x.EndsWith("input.txt")));

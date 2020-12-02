@@ -33,7 +33,7 @@ namespace Days
 
         public override void Gather_input()
         {
-            var string_input = ReadFile().ToList();
+            var string_input = Read_file().ToList();
             input = string_input.Select(x =>
             {
                 var string_input = x.Split(" ");
