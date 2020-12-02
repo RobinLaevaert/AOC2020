@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Days
 {
@@ -29,9 +30,10 @@ namespace Days
             Console.WriteLine($"Amount of correct passwords: {count_valid_passwords}");
         }
 
-        public override void ReadFile()
+
+        public override void Gather_input()
         {
-            var string_input = File.ReadAllLines(GetFilePath()).ToList();
+            var string_input = ReadFile().ToList();
             input = string_input.Select(x =>
             {
                 var string_input = x.Split(" ");

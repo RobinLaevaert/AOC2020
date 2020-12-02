@@ -30,9 +30,9 @@ namespace Days
             Console.WriteLine(result);
         }
 
-        public override void ReadFile()
+        public override void Gather_input()
         {
-            input = File.ReadAllLines(GetFilePath()).Select(int.Parse).ToList();
+            input = ReadFile().Select(int.Parse).ToList();
         }
     }
 }

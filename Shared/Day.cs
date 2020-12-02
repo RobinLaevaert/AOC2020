@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-
+using System.Text;
 
 namespace AOC2020.Shared
 {
@@ -28,21 +30,21 @@ namespace AOC2020.Shared
             switch (Console.ReadLine())
             {
                 case "1":
-                    ReadFile();
+                    Gather_input();
                     Part1();
                     break;
                 case "2":
-                    ReadFile();
+                    Gather_input();
                     Part2() ;
                     break;
                 case "1p":
-                    Performance_logging(ReadFile, Part1);
+                    Performance_logging(Gather_input, Part1);
                     break;
                 case "2p":
-                    Performance_logging(ReadFile, Part2);
+                    Performance_logging(Gather_input, Part2);
                     break;
                 case "3p":
-                    Performance_logging(ReadFile, Part1, Part2);
+                    Performance_logging(Gather_input, Part1, Part2);
                     break;
                 default:
                     Console.WriteLine($"Not implemented");
@@ -58,12 +60,16 @@ namespace AOC2020.Shared
             Console.Clear();
         }
 
-        public string GetFilePath()
+        
+        protected IEnumerable<string> ReadFile()
         {
-            var path =  Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $@"input{DayNumber}.txt");
-            return path;
+            var resources = Assembly.GetCallingAssembly().GetManifestResourceNames().ToList();
+            using Stream stream = Assembly.GetCallingAssembly().GetManifestResourceStream(resources.Single(x => x.EndsWith("input.txt")));
+            using StreamReader reader = new StreamReader(stream);
+            return reader.ReadAllLines().ToArray();
         }
-        public abstract void ReadFile();
+
+        public abstract void Gather_input();
 
         public abstract void Part1();
 
@@ -77,7 +83,7 @@ namespace AOC2020.Shared
             foreach (var action in actions)
             {
                 var action_name = action.GetMethodInfo().Name;
-                if(action_name != "ReadFile")
+                if(action_name != "Gather_input")
                     Console.WriteLine(action_name);
                 stopwatch.Reset();
                 stopwatch.Start();
