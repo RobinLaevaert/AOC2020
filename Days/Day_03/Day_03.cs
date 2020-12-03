@@ -27,18 +27,18 @@ namespace Days
 
         public override void Part1()
         {
-            Console.WriteLine($"Trees encountered: {field.Select(x => x[field.IndexOf(x)]).Count(x => x == '#')}");
+            Console.WriteLine($"Trees encountered: {field.Select((x, i) => x[3 * i]).Count(x => x == '#')}");
         }
 
         public override void Part2()
         {
-            var trees_1_1 = field.Select(x => x[field.IndexOf(x)]).Count(x => x == '#');
-            var trees_3_1 = field.Select(x => x[field.IndexOf(x)*3]).Count(x => x == '#');
-            var trees_5_1 = field.Select(x => x[field.IndexOf(x)*5]).Count(x => x == '#');
-            var trees_7_1 = field.Select(x => x[field.IndexOf(x)*7]).Count(x => x == '#');
-            var trees_1_2 = field.Where(x => field.IndexOf(x)%2 == 0).Select(x => x[field.IndexOf(x)/2]).Count(x => x == '#');
+            var trees_1_1 = field.Select((x, i) => x[i]).Count(x => x == '#');
+            var trees_3_1 = field.Select((x, i) => x[3 * i]).Count(x => x == '#');
+            var trees_5_1 = field.Select((x, i) => x[5 * i]).Count(x => x == '#');
+            var trees_7_1 = field.Select((x, i) => x[7 * i]).Count(x => x == '#');
+            var trees_1_2 = field.Select((x, i) => x[i / 2]).Where((x, i) => i % 2 == 0).Count(x => x == '#');
 
-            Console.WriteLine($"Product of trees encountered: {trees_1_1 * trees_3_1 * trees_5_1 * trees_7_1 * trees_1_2}");
+            Console.WriteLine($"Product of trees encountered: {(long)trees_1_1 * trees_3_1 * trees_5_1 * trees_7_1 * trees_1_2}");
         }
     }
 }
