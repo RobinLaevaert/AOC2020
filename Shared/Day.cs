@@ -75,7 +75,7 @@ namespace AOC2020.Shared
 
         public abstract void Part2();
 
-        public void Performance_logging(params Action[] actions) 
+        public static void Performance_logging(params Action[] actions) 
         {
             Stopwatch stopwatch = new();
             Dictionary<string, double> timings_per_action = new();

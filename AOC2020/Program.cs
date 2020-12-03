@@ -11,7 +11,8 @@ namespace AOC2020
         public static List<Day> days = new()
         {
             new Days.Day_01(),
-            new Days.Day_02()
+            new Days.Day_02(),
+            new Days.Day_03()
         };
         static void Main(string[] args)
         {
