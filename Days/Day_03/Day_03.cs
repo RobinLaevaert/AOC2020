@@ -17,15 +17,12 @@ namespace Days
         }
         public override void Gather_input()
         {
-            var lines = Read_file().ToList();
-            var lines_count = lines.Count();
-            var line_length = lines.First().Length;
-            while(line_length < 7 * lines_count)
+            var lines = Read_file();
+            while(lines.First().Length < 7 * lines.Count())
             {
                 lines = lines.Select(x => x += x).ToList();
-                line_length = lines.First().Length;
             }
-            field = lines;
+            field = lines.ToList();
         }
 
         public override void Part1()
