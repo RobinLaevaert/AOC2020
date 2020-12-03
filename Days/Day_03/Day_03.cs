@@ -36,6 +36,6 @@ namespace Days
             Console.WriteLine($"Product of trees encountered: {(long)trees_1_1 * trees_3_1 * trees_5_1 * trees_7_1 * trees_1_2}");
         }
 
-        public int Get_trees_in_slope(int vX, int vY) => field.Select((x, i) => x[(vX * i) / vY]).Where((x, i) => i % vY == 0).Count(x => x == '#');
+        public int Get_trees_in_slope(int vX, int vY) => field.Select((x, i) => x[vX * i / vY]).Where((x, i) => i % vY == 0).Count(x => x == '#');
     }
 }
