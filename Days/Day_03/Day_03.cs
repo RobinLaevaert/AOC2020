@@ -8,6 +8,7 @@ namespace Days
     public class Day_03 : Day
     {
         List<string> field;
+        private int width; 
         public Day_03()
         {
             DayNumber = 3;
@@ -16,10 +17,7 @@ namespace Days
         public override void Gather_input()
         {
             var lines = Read_file();
-            while(lines.First().Length < 7 * lines.Count())
-            {
-                lines = lines.Select(x => x += x).ToList();
-            }
+            width = lines.First().Length;
             field = lines.ToList();
         }
 
@@ -36,6 +34,6 @@ namespace Days
             Console.WriteLine($"Product of trees encountered: {(long)trees_1_1 * trees_3_1 * trees_5_1 * trees_7_1 * trees_1_2}");
         }
 
-        public int Get_trees_in_slope(int vX, int vY) => field.Select((line, index) => line[vX * index / vY]).Where((x, index) => index % vY == 0).Count(x => x == '#');
+        public int Get_trees_in_slope(int vX, int vY) => field.Select((line, index) => line[(vX * index / vY)%width]).Where((x, index) => index % vY == 0).Count(x => x == '#');
     }
 }
