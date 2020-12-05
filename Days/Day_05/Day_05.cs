@@ -62,7 +62,9 @@ namespace Days
         public int get_seat(string instructions, int lower_limit, int upper_limit)
         {
             if (instructions == string.Empty) return lower_limit;
-            var middle_point = (int)(instructions.First() == 'U' ? Math.Ceiling((double)(lower_limit + upper_limit) / 2) : Math.Floor((double)(lower_limit + upper_limit) / 2));
+            var middle_point = (int)(instructions.First() == 'U' ? 
+                Math.Ceiling((double)(lower_limit + upper_limit) / 2) : 
+                Math.Floor((double)(lower_limit + upper_limit) / 2));
             var new_lower_limit = instructions.First() == 'U' ? middle_point : lower_limit;
             var new_upper_limit = instructions.First() == 'U' ? upper_limit : middle_point;
             var new_instructions = instructions.Substring(1);
