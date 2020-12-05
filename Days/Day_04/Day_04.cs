@@ -19,29 +19,32 @@ namespace Days
         }
         public override void Gather_input()
         {
-            var currentString = "";
+            StringBuilder sb = new();
             List<string> strings = new ();
             
             foreach (var line in Read_file())
             {
                 if (line == string.Empty) 
                 { 
-                    strings.Add(currentString);
-                    currentString = "";
+                    strings.Add(sb.ToString());
+                    sb.Clear();
                 }
                 else
                 {
-                    currentString += $" {line}";
+                    sb.Append($" {line}");
                 }
             }
-            strings.Add(currentString);
+            strings.Add(sb.ToString());
 
-            dictionary = strings.Select(x => x.Split(" ").Where(y => y != string.Empty).Select(y => y.Split(':')).ToDictionary(y => y[0], y => y[1])).ToList();
+            dictionary = strings.Select(x => x.Split(" ")
+                                              .Where(y => y != string.Empty)
+                                              .Select(y => y.Split(':'))
+                                .ToDictionary(y => y[0], y => y[1])).ToList();
         }
 
         public override void Part1()
         {
-            var validPasswords = dictionary.Where(x => x.Count() >= 7)
+            var validPasswords = dictionary.Where(x => x.Count >= 7)
                 .Count(x => x.ContainsKey("byr") &&
                             x.ContainsKey("iyr") &&
                             x.ContainsKey("eyr") &&
@@ -55,16 +58,16 @@ namespace Days
         public override void Part2()
         {
             var regex = new Regex(@"(#{1})([0-9a-f]{6}|[0-9a-f]{6})$");
-            var validPasswords = dictionary.Where(x => x.Count() >= 6)
-                .Where(x => x.ContainsKey("byr") && (1920 <= int.Parse(x.GetValueOrDefault("byr")) && int.Parse(x.GetValueOrDefault("byr")) <= 2002) &&
-                            x.ContainsKey("iyr") && (2010 <= int.Parse(x.GetValueOrDefault("iyr")) && int.Parse(x.GetValueOrDefault("iyr")) <= 2020) &&
-                            x.ContainsKey("eyr") && (2020 <= int.Parse(x.GetValueOrDefault("eyr")) && int.Parse(x.GetValueOrDefault("eyr")) <= 2030) &&
-                            x.ContainsKey("hgt") && is_hgt_valid(x.GetValueOrDefault("hgt")) &&
-                            x.ContainsKey("hcl") && regex.IsMatch(x.GetValueOrDefault("hcl")) &&
-                            x.ContainsKey("ecl") && possibleEyeColors.Contains(x.GetValueOrDefault("ecl")) &&
-                            x.ContainsKey("pid") && x.GetValueOrDefault("pid").Length == 9);
+            var validPasswords = dictionary.Where(x => x.Count >= 7)
+                .Count(x => x.ContainsKey("byr") && (1920 <= int.Parse(x["byr"]) && int.Parse(x["byr"]) <= 2002) &&
+                            x.ContainsKey("iyr") && (2010 <= int.Parse(x["iyr"]) && int.Parse(x["iyr"]) <= 2020) &&
+                            x.ContainsKey("eyr") && (2020 <= int.Parse(x["eyr"]) && int.Parse(x["eyr"]) <= 2030) &&
+                            x.ContainsKey("hgt") && is_hgt_valid(x["hgt"]) &&
+                            x.ContainsKey("hcl") && regex.IsMatch(x["hcl"]) &&
+                            x.ContainsKey("ecl") && possibleEyeColors.Contains(x["ecl"]) &&
+                            x.ContainsKey("pid") && x["pid"].Length == 9);
 
-            Console.WriteLine($"There are {validPasswords.Count()} validapasswords");
+            Console.WriteLine($"There are {validPasswords} validapasswords");
         }
 
         bool is_hgt_valid(string input)
