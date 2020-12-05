@@ -67,7 +67,7 @@ namespace Days
                 Math.Floor((double)(lower_limit + upper_limit) / 2));
             var new_lower_limit = instructions.First() == 'U' ? middle_point : lower_limit;
             var new_upper_limit = instructions.First() == 'U' ? upper_limit : middle_point;
-            var new_instructions = instructions.Substring(1);
+            var new_instructions = instructions[1..];
 
             return get_seat(new_instructions, new_lower_limit, new_upper_limit);
         }
