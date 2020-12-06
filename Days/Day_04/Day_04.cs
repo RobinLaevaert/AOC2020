@@ -59,9 +59,9 @@ namespace Days
         {
             var regex = new Regex(@"(#{1})([0-9a-f]{6}|[0-9a-f]{6})$");
             var validPasswords = dictionary.Where(x => x.Count >= 7)
-                .Count(x => x.ContainsKey("byr") && (1920 <= int.Parse(x["byr"]) && int.Parse(x["byr"]) <= 2002) &&
-                            x.ContainsKey("iyr") && (2010 <= int.Parse(x["iyr"]) && int.Parse(x["iyr"]) <= 2020) &&
-                            x.ContainsKey("eyr") && (2020 <= int.Parse(x["eyr"]) && int.Parse(x["eyr"]) <= 2030) &&
+                .Count(x => x.ContainsKey("byr") && (int.Parse(x["byr"]) is >= 1920 and <= 2002) &&
+                            x.ContainsKey("iyr") && (int.Parse(x["iyr"]) is >= 2010 and <= 2020) &&
+                            x.ContainsKey("eyr") && (int.Parse(x["eyr"]) is >= 2020 and <= 2030) &&
                             x.ContainsKey("hgt") && is_hgt_valid(x["hgt"]) &&
                             x.ContainsKey("hcl") && regex.IsMatch(x["hcl"]) &&
                             x.ContainsKey("ecl") && possibleEyeColors.Contains(x["ecl"]) &&
