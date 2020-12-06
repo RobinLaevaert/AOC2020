@@ -34,15 +34,20 @@ namespace Days
 
         public override void Part1()
         {
+            //Grouping all answer strings per group 
             var groupedAnswers = groups.Select(x => new string(x.Answers.SelectMany(y => y).ToArray()));
+            //selecting distinct chars in each group-answer-string
             var distincAnswers = groupedAnswers.Select(x => x.Distinct().Count());
-            var answer = distincAnswers.Aggregate((x, y) => x + y);
+            //counting these all together
+            var answer = distincAnswers.Sum();
             Console.WriteLine($"The sum of these counts is: {answer}");
         }
 
         public override void Part2()
         {
+            // Get list of strings which show the shared chars in each group
             var sharedAnswersPerGroup = groups.Select(x => x.Answers.Aggregate((y, z) => new string(y.Intersect(z).ToArray())));
+            // Sum the length of each string == shared char count
             var answer = sharedAnswersPerGroup.Sum(x => x.Length);
             Console.WriteLine($"The sum of these counts is: {answer}");
         }
