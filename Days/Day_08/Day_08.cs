@@ -16,7 +16,6 @@ namespace Days
         public override void Gather_input()
         {
             var input = Read_file().ToList();
-            ///Enum.TryParse("jmp", out Task test);
             task_list = input.Select(x =>
             {
                 var splitted = x.Split(' ');
