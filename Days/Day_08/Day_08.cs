@@ -15,14 +15,12 @@ namespace Days
         }
         public override void Gather_input()
         {
-            var input = Read_file().ToList();
-            task_list = input.Select(x =>
+            task_list = Read_file().Select(x =>
             {
                 var splitted = x.Split(' ');
                 _ = Enum.TryParse(splitted[0], out Task task);
                 return new Tuple<Task, int>(task, int.Parse(splitted[1]));
             }).ToList();
-
         }
 
         public override void Part1()
