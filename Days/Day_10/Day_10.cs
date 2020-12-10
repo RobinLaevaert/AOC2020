@@ -34,8 +34,7 @@ namespace Days
             calculatedSteps = new();
             var sortedInput = adapters.OrderBy(x => x);
             var routeSplits = sortedInput.Select(x => new RouteSplit { Number = x, Routes =adapters.Where(y => x + 1 <= y && y <= x + 3) });
-            var test = GetPossibleRoutes(sortedInput, routeSplits, sortedInput.First());
-            Console.WriteLine(test);
+            Console.WriteLine(GetPossibleRoutes(sortedInput, routeSplits, sortedInput.First()));
         }
         public long GetPossibleRoutes(IEnumerable<int> input, IEnumerable<RouteSplit> splits, int beginValue)
         {
@@ -45,8 +44,8 @@ namespace Days
             else
             {
                 var split = splits.Single(x => x.Number == beginValue);
-                var test = calculatedSteps.FirstOrDefault(x => x.Item1 == beginValue);
-                if (test != null) return test.Item2;
+                var alreadyCalculated = calculatedSteps.FirstOrDefault(x => x.Item1 == beginValue);
+                if (alreadyCalculated != null) return alreadyCalculated.Item2;
                 else
                 {
                     var calculation = split.Routes.Sum(x => GetPossibleRoutes(input, splits, x));
