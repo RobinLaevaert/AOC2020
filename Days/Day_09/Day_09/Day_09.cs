@@ -20,19 +20,19 @@ namespace Days
 
         public override void Part1()
         {
-            var faulty_value = Get_faulty_value(input_stream, 25);
+            var faulty_value = Get_faulty_value(input_stream, 5);
             Console.WriteLine(faulty_value);
         }
 
         public override void Part2()
         {
             var faulty_value = Get_faulty_value(input_stream, 25);
-            foreach(var item in input_stream.Select((value, i) => new { i, value }))
+            foreach (var item in input_stream.Select((value, i) => new { i, value }))
             {
                 long value = 0;
                 List<long> used_values = new();
                 var index = item.i;
-                while (value< faulty_value)
+                while (value < faulty_value)
                 {
                     if (index == -1 || value == faulty_value) break;
                     used_values.Add(input_stream[index]);
@@ -44,11 +44,8 @@ namespace Days
             }
         }
 
-        public long Get_faulty_value(List<long> input, int preamble_length)
+        public static long Get_faulty_value(List<long> input, int preamble_length)
         {
-            //var possible_range = input.Where((x, i) => i >= 5)
-            //    .Select((x, xi) => input.Where((y, yi) => yi < xi && yi >= xi - preamble_length).Any(z => input.Where((y, yi) => yi < xi && yi >= xi - preamble_length).Any(a => a + z == x))).ToList();
-
             foreach (var item in input.Select((value, i) => new { i, value }).Where((x, i) => i >= preamble_length))
             {
                 var possible_range = input.Where((x, i) => item.i - preamble_length <= i && i < item.i);

@@ -18,7 +18,8 @@ namespace AOC2020
             new Days.Day_06(),
             new Days.Day_07(),
             new Days.Day_08(),
-            new Days.Day_09()
+            new Days.Day_09(),
+            new Days.Day_10()
         };
         static void Main(string[] args)
         {
