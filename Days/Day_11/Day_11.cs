@@ -6,9 +6,8 @@ using System.Linq;
 
 namespace Days
 {
-    public class Day_11 : Day
+    public partial class Day_11 : Day
     {
-        Dictionary<Point, Seat_status> seats;
         List<List<Seat_status>> seats_test;
         public Day_11()
         {
@@ -17,51 +16,32 @@ namespace Days
         }
         public override void Gather_input()
         {
-            seats = Read_file()
-                .SelectMany((x, xi) => x.Select((y, yi) =>
-                            new KeyValuePair<Point, Seat_status>(new Point(yi, xi), Get_seat_status(y))))
-                .ToDictionary(x => x.Key, v => v.Value);
             seats_test = Read_file()
                 .Select((x) => x.Select((y) => Get_seat_status(y)).ToList()).ToList();
         }
 
         public override void Part1()
         {
-            var currentStatus = seats.ToDictionary(x => x.Key, x => x.Value);
-            List<List<Seat_status>> currentStatus_test = seats_test.ToList();
-            Console.WriteLine();
+            List<List<Seat_status>> current_status = seats_test.ToList();
             while (true)
             {
-                //var nextStatus = Get_next_iteration(currentStatus);
-                var next_status_test = Get_next_iteration(currentStatus_test);
-                if (next_status_test.All((x) => x.SequenceEqual(currentStatus_test[next_status_test.IndexOf(x)]))) break;
-                //currentStatus = nextStatus;
-                currentStatus_test = next_status_test;
-                //currentStatus_test.ForEach(x => { Console.WriteLine(); x.ForEach(y => Console.Write(Get_seat_status_char(y))); });
+                var next_status = Get_next_iteration(current_status);
+                if (next_status.All((x) => x.SequenceEqual(current_status[next_status.IndexOf(x)]))) break;
+                current_status = next_status;
             }
-            Console.WriteLine(currentStatus_test.SelectMany(x => x.Select(y => y)).Count(x => x == Seat_status.Occupied));
+            Console.WriteLine(current_status.SelectMany(x => x.Select(y => y)).Count(x => x == Seat_status.Occupied));
         }
 
         public override void Part2()
         {
-            throw new NotImplementedException();
-        }
-        public Dictionary<Point, Seat_status> Get_next_iteration(Dictionary<Point, Seat_status> status)
-        {
-            return status.ToDictionary(x => x.Key, x =>
+            List<List<Seat_status>> current_status = seats_test.ToList();
+            while (true)
             {
-                if (x.Value == Seat_status.Floor) return Seat_status.Floor;
-                var neighbours_occupied = status.Count(y => y.Value == Seat_status.Occupied && 
-                                                            x.Key.X - 1 <= y.Key.X &&
-                                                           y.Key.X <= x.Key.X + 1 &&
-                                                           x.Key.Y - 1 <= y.Key.Y &&
-                                                           y.Key.Y <= x.Key.Y + 1 &&
-                                                           (x.Key.X != y.Key.X || x.Key.Y != y.Key.Y));
-                if (x.Value == Seat_status.Empty && neighbours_occupied == 0) return Seat_status.Occupied;
-                if (x.Value == Seat_status.Occupied && neighbours_occupied >= 4) return Seat_status.Empty;
-                return x.Value;
-
-            });
+                var next_status = Get_next_iteration_p2(current_status);
+                if (next_status.All((x) => x.SequenceEqual(current_status[next_status.IndexOf(x)]))) break;
+                current_status = next_status;
+            }
+            Console.WriteLine(current_status.SelectMany(x => x.Select(y => y)).Count(x => x == Seat_status.Occupied));
         }
 
         public List<List<Seat_status>> Get_next_iteration(List<List<Seat_status>> status)
@@ -77,6 +57,48 @@ namespace Days
                 return y;
             }).ToList()).ToList();
         }
+
+        public List<List<Seat_status>> Get_next_iteration_p2(List<List<Seat_status>> status)
+        {
+            return status.Select((x, xi) => x.Select((y, yi) =>
+            {
+                // Horizontal
+                var horizontal_line = status[xi];
+                var left = horizontal_line.Take(yi);
+                var right = horizontal_line.Where((z, zi) => zi > yi);
+                var first_left_seat = left.LastOrDefault(x => x != Seat_status.Floor);
+                var first_right_seat = right.FirstOrDefault(x => x != Seat_status.Floor);
+
+                // Vertical
+                var vertical_line = status.Select(z => z[yi]).ToList();
+                var up = vertical_line.Take(xi);
+                var down = vertical_line.Where((z, zi) => zi > xi);
+                var first_upper_seat = up.LastOrDefault(x => x != Seat_status.Floor);
+                var first_down_seat = down.FirstOrDefault(x => x != Seat_status.Floor);
+
+
+                // Rising Diagonal
+                var rising_diagonal = status.Select((z, zi) => z.Where((a, ai) => zi + ai == xi + yi).ToList()).ToList();
+                var rising_diagonal_right = rising_diagonal.Take(xi).SelectMany(z => z.Select(a => a));
+                var rising_diagonal_left = rising_diagonal.Where((z, zi) => zi > xi).SelectMany(z => z.Select(a => a)); 
+                var first_seat_rising_diagonal_left = rising_diagonal_left.FirstOrDefault(x => x != Seat_status.Floor);
+                var first_seat_rising_diagonal_right = rising_diagonal_right.LastOrDefault(x => x != Seat_status.Floor);
+
+                // Falling Diagonal
+                var falling_diagonal = status.Select((z, zi) => z.Where((a, ai) => zi - ai == xi - yi).ToList()).ToList();
+                var falling_diagonal_left = falling_diagonal.Take(xi).SelectMany(z => z.Select(a => a));
+                var falling_diagonal_right = falling_diagonal.Where((z, zi) => zi > xi).SelectMany(z => z.Select(a => a));
+                var first_seat_falling_diagonal_left = falling_diagonal_left.LastOrDefault(x => x != Seat_status.Floor);
+                var first_seat_falling_diagonal_right = falling_diagonal_right.FirstOrDefault(x => x != Seat_status.Floor);
+                
+                var first_seats = new List<Seat_status>() { first_left_seat, first_right_seat, first_upper_seat, first_down_seat, first_seat_rising_diagonal_right, first_seat_rising_diagonal_left, first_seat_falling_diagonal_left, first_seat_falling_diagonal_right };
+                var count = first_seats.Count(x => x == Seat_status.Occupied);
+                
+                if (y == Seat_status.Empty && count == 0) return Seat_status.Occupied;
+                if (y == Seat_status.Occupied && count >= 5) return Seat_status.Empty;
+                return y;
+            }).ToList()).ToList();
+        }
         public Seat_status Get_seat_status(char input)
         {
             switch (input)
@@ -86,30 +108,5 @@ namespace Days
                 default: return Seat_status.Floor;
             }
         }
-
-        public char Get_seat_status_char(Seat_status input)
-        {
-            switch (input)
-            {
-                case Seat_status.Empty: return 'L';
-                case Seat_status.Occupied: return '#';
-                default: return '.';
-            }
-        }
-
-        public void Print_dictionary(Dictionary<Point, Seat_status> dict)
-        {
-            var test = dict.ToList().OrderBy(x => x.Key.Y).ThenBy(x => x.Key.X).GroupBy(x => x.Key.Y).ToList();
-            test.ForEach(x => { Console.WriteLine(); x.ToList().ForEach(y => Console.Write(Get_seat_status_char(y.Value))); });
-        }
     }
-
-    public enum Seat_status
-    {
-        Floor,
-        Empty,
-        Occupied
-    }
-
-
 }
