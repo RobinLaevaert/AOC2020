@@ -62,12 +62,16 @@ namespace Days
         {
             return status.Select((x, xi) => x.Select((y, yi) =>
             {
+                var first_seats = new List<Seat_status>();
+
                 // Horizontal
                 var horizontal_line = status[xi];
                 var left = horizontal_line.Take(yi);
                 var right = horizontal_line.Where((z, zi) => zi > yi);
                 var first_left_seat = left.LastOrDefault(x => x != Seat_status.Floor);
                 var first_right_seat = right.FirstOrDefault(x => x != Seat_status.Floor);
+                first_seats.Add(first_right_seat);
+                first_seats.Add(first_left_seat);
 
                 // Vertical
                 var vertical_line = status.Select(z => z[yi]).ToList();
@@ -75,7 +79,8 @@ namespace Days
                 var down = vertical_line.Where((z, zi) => zi > xi);
                 var first_upper_seat = up.LastOrDefault(x => x != Seat_status.Floor);
                 var first_down_seat = down.FirstOrDefault(x => x != Seat_status.Floor);
-
+                first_seats.Add(first_upper_seat);
+                first_seats.Add(first_down_seat);
 
                 // Rising Diagonal
                 var rising_diagonal = status.Select((z, zi) => z.Where((a, ai) => zi + ai == xi + yi).ToList()).ToList();
@@ -83,6 +88,8 @@ namespace Days
                 var rising_diagonal_left = rising_diagonal.Where((z, zi) => zi > xi).SelectMany(z => z.Select(a => a)); 
                 var first_seat_rising_diagonal_left = rising_diagonal_left.FirstOrDefault(x => x != Seat_status.Floor);
                 var first_seat_rising_diagonal_right = rising_diagonal_right.LastOrDefault(x => x != Seat_status.Floor);
+                first_seats.Add(first_seat_rising_diagonal_left);
+                first_seats.Add(first_seat_rising_diagonal_right);
 
                 // Falling Diagonal
                 var falling_diagonal = status.Select((z, zi) => z.Where((a, ai) => zi - ai == xi - yi).ToList()).ToList();
@@ -90,8 +97,9 @@ namespace Days
                 var falling_diagonal_right = falling_diagonal.Where((z, zi) => zi > xi).SelectMany(z => z.Select(a => a));
                 var first_seat_falling_diagonal_left = falling_diagonal_left.LastOrDefault(x => x != Seat_status.Floor);
                 var first_seat_falling_diagonal_right = falling_diagonal_right.FirstOrDefault(x => x != Seat_status.Floor);
-                
-                var first_seats = new List<Seat_status>() { first_left_seat, first_right_seat, first_upper_seat, first_down_seat, first_seat_rising_diagonal_right, first_seat_rising_diagonal_left, first_seat_falling_diagonal_left, first_seat_falling_diagonal_right };
+                first_seats.Add(first_seat_falling_diagonal_right);
+                first_seats.Add(first_seat_falling_diagonal_left);
+
                 var count = first_seats.Count(x => x == Seat_status.Occupied);
                 
                 if (y == Seat_status.Empty && count == 0) return Seat_status.Occupied;
