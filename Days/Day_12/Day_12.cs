@@ -103,9 +103,9 @@ namespace Days
 
         public static void Turn(Coordinate current_coordinate, int steps)
         {
-            var stepsRefined = steps % 4;
-            if (stepsRefined < 0) stepsRefined += 4;
-            for (int i = 0; i < stepsRefined; i++)
+            var refined_steps = steps % 4;
+            if (refined_steps < 0) refined_steps += 4;
+            for (int i = 0; i < refined_steps; i++)
             {
                 var tempX = current_coordinate.Y;
                 var tempY = -current_coordinate.X;
