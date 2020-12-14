@@ -3,38 +3,40 @@ using Days;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Shared;
 
 namespace AOC2020
 {
-    class Program
+    internal static class Program
     {
-        public static List<Day> days = new()
+        private static readonly List<Day> Days = new()
         {
-            new Days.Day_01(),
-            new Days.Day_02(),
-            new Days.Day_03(),
-            new Days.Day_04(),
-            new Days.Day_05(),
-            new Days.Day_06(),
-            new Days.Day_07(),
-            new Days.Day_08(),
-            new Days.Day_09(),
-            new Days.Day_10(),
-            new Days.Day_11(),
-            new Days.Day_12(),
-            new Days.Day_13(),
-            new Days.Day_14(),
+            new Day_01(),
+            new Day_02(),
+            new Day_03(),
+            new Day_04(),
+            new Day_05(),
+            new Day_06(),
+            new Day_07(),
+            new Day_08(),
+            new Day_09(),
+            new Day_10(),
+            new Day_11(),
+            new Day_12(),
+            new Day_13(),
+            new Day_14(),
         };
         static void Main(string[] args)
         {
             while (true)
             {
                 Console.WriteLine("Which Day do you want ?");
-                days.Where(x => x.Title != null).ToList().ForEach(x => x.PrintInfo());
+                var infos = Days.Where(x => x.Title != null).ToList().Select(x => x.Info).ToList();
+                WriteHelper.PrintInfos(infos);
                 var input = Console.ReadLine();
-                if(int.TryParse(input, out var chosenDay) && days.SingleOrDefault(x => x.DayNumber == chosenDay) != null)
+                if(int.TryParse(input, out var chosenDay) && Days.SingleOrDefault(x => x.DayNumber == chosenDay) != null)
                 {
-                    var day = days.Single(x => x.DayNumber == chosenDay);
+                    var day = Days.Single(x => x.DayNumber == chosenDay);
                     day.HandleSelect();
                     day.Deselect();
                 }

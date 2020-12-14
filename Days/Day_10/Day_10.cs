@@ -15,21 +15,22 @@ namespace Days
             Title = "Adapter Array";
             DayNumber = 10;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             adapters = Read_file().Select(int.Parse).ToList();
             adapters.Add(0); // wall Adapter
             adapters.Add(adapters.Max() + 3); // final step
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var sortedInput = adapters.OrderBy(x => x);
             var differences = sortedInput.SelectWithPrevious((prev, curr) => curr - prev);
             Console.WriteLine(differences.Count(x => x == 3) * differences.Count(x => x == 1));
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             calculatedSteps = new();
             var sortedInput = adapters.OrderBy(x => x);

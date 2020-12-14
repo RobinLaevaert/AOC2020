@@ -14,7 +14,8 @@ namespace Days
             DayNumber = 6;
             Title = "Custom Customs";
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             Group group = new();
             foreach (var line in Read_file())
@@ -32,7 +33,7 @@ namespace Days
             groups.Add(group);
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             //Grouping all answer strings per group 
             var groupedAnswers = groups.Select(x => new string(x.Answers.SelectMany(y => y).ToArray()));
@@ -43,7 +44,7 @@ namespace Days
             Console.WriteLine($"The sum of these counts is: {answer}");
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             // Get list of strings which show the shared chars in each group
             var sharedAnswersPerGroup = groups.Select(x => x.Answers.Aggregate((y, z) => new string(y.Intersect(z).ToArray())));

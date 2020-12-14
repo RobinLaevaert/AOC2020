@@ -8,41 +8,42 @@ namespace Days
 {
     public class Day_14 : Day
     {
-        List<Instruction> Instructions;
+        private List<Instruction> _instructions;
         public Day_14()
         {
             Title = "Docking Data";
             DayNumber = 14;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
-            Instructions = new List<Instruction>();
+            _instructions = new List<Instruction>();
             Instruction current_instruction = null;
             foreach (var line in Read_file())
             {
-                var splitted_string = line.Split(" = ");
-                if(splitted_string.First() == "mask")
+                var split_string = line.Split(" = ");
+                if(split_string.First() == "mask")
                 {
-                    if (current_instruction != null) Instructions.Add(current_instruction);
-                    current_instruction = new Instruction() { Bit_mask = splitted_string.Last() };
+                    if (current_instruction != null) _instructions.Add(current_instruction);
+                    current_instruction = new Instruction() { Bit_mask = split_string.Last() };
                 }
                 else
                 {
-                    var address = splitted_string.First()[4..^1];
-                    current_instruction.Memory_instructions.Add(new Memory_instruction()
+                    var address = split_string.First()[4..^1];
+                    current_instruction?.Memory_instructions.Add(new Memory_instruction()
                     {
-                        Memory_address = int.Parse(splitted_string.First()[4..^1]),
-                        Value = long.Parse(splitted_string.Last())
+                        Memory_address = int.Parse(split_string.First()[4..^1]),
+                        Value = long.Parse(split_string.Last())
                     }); ;
                 }
             }
-            Instructions.Add(current_instruction);
+            _instructions.Add(current_instruction);
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var memory = new List<Memory>();
-            foreach (var instruction in Instructions)
+            foreach (var instruction in _instructions)
             {
                 foreach (var memory_instruction in instruction.Memory_instructions)
                 {
@@ -51,7 +52,7 @@ namespace Days
                     var mask_filtered = instruction.Bit_mask.Select(x => x == 'X' ? '0' : x).ToArray();
                     var new_long_value = value_with_0_bits_where_mask_will_change | Convert.ToInt64(new string(mask_filtered), 2);
 
-                    if (!memory.Any(x => x.Address == memory_instruction.Memory_address)) memory.Add(new Memory() { Address = memory_instruction.Memory_address, Value = new_long_value });
+                    if (memory.All(x => x.Address != memory_instruction.Memory_address)) memory.Add(new Memory() { Address = memory_instruction.Memory_address, Value = new_long_value });
                     else
                     {
                         memory.Single(x => x.Address == memory_instruction.Memory_address).Value = new_long_value;
@@ -61,10 +62,10 @@ namespace Days
             Console.WriteLine(memory.Sum(x => x.Value));
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var memory = new List<Memory>();
-            foreach (var instruction in Instructions)
+            foreach (var instruction in _instructions)
             {
                 foreach (var memory_instruction in instruction.Memory_instructions)
                 {
@@ -73,30 +74,30 @@ namespace Days
                     var second = instruction.Bit_mask.Select(x => x == 'X' ? '0' : x).ToArray();
                     var tempSecond = Convert.ToInt64(tempFirst) | Convert.ToInt64(new string(second), 2);
                     var tempSecondBinary = Convert.ToString(tempSecond, 2).PadLeft(36, '0');
-                    var Items = instruction.Bit_mask.Select((item, index) => new {
+                    var items = instruction.Bit_mask.Select((item, index) => new {
                         ItemName = item,
                         Position = index
                     }).Where(i => i.ItemName == 'X').ToList();
                     var sb = new StringBuilder(tempSecondBinary);
-                    foreach (var item in Items)
+                    foreach (var item in items)
                     {
                         sb[item.Position] = 'X';
                     }
                     var tempThird = sb.ToString();
 
-                    for (int i = 0; i < Math.Pow(2, instruction.Bit_mask.Count(x => x == 'X')); i++)
+                    for (var i = 0; i < Math.Pow(2, instruction.Bit_mask.Count(x => x == 'X')); i++)
                     {
                         var binary = Convert.ToString(i, 2).PadLeft(instruction.Bit_mask.Count(x => x == 'X'), '0');
                         var new_value_full = new StringBuilder(tempThird);
-                        for (int j = 0; j < instruction.Bit_mask.Count(x => x == 'X'); j++)
+                        for (var j = 0; j < instruction.Bit_mask.Count(x => x == 'X'); j++)
                         {
-                            var position = Items[j].Position;
+                            var position = items[j].Position;
                             var new_value = binary[j];
                             new_value_full[position] = new_value;
                         }
 
                         var result = Convert.ToInt64(new_value_full.ToString(), 2);
-                        if (!memory.Any(x => x.Address == result)) memory.Add(new Memory() { Address = result, Value = memory_instruction.Value });
+                        if (memory.All(x => x.Address != result)) memory.Add(new Memory() { Address = result, Value = memory_instruction.Value });
                         else
                         {
                             memory.Single(x => x.Address == result).Value = memory_instruction.Value;
@@ -115,13 +116,13 @@ namespace Days
     }
     public class Memory_instruction
     {
-        public int Memory_address { get; set; }
-        public long Value { get; set; }
+        public int Memory_address { get; init; }
+        public long Value { get; init; }
     }
 
     public class Memory
     {
-        public long Address { get; set; }
+        public long Address { get; init; }
         public long Value { get; set; }
     }
 }

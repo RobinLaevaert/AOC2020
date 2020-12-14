@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Day_02
+namespace Days
 {
     public class Password_validation
     {

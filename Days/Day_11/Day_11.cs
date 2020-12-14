@@ -13,13 +13,14 @@ namespace Days
             Title = "Seating System";
             DayNumber = 11;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             seats_test = Read_file()
                 .Select((x) => x.Select((y) => Get_seat_status(y)).ToList()).ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             List<List<Seat_status>> current_status = seats_test.ToList();
             while (true)
@@ -31,7 +32,7 @@ namespace Days
             Console.WriteLine(current_status.SelectMany(x => x.Select(y => y)).Count(x => x == Seat_status.Occupied));
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             List<List<Seat_status>> current_status = seats_test.ToList();
             while (true)

@@ -14,14 +14,15 @@ namespace Days
             Title = "Shuttle Search";
             DayNumber = 13;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             var temp = Read_file();
             starting_point = int.Parse(temp.First());
             instructions = temp.Last().Split(',').ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var closest_departure = instructions.Where(x => x != "x")
                                                 .Select(x => 
@@ -34,7 +35,7 @@ namespace Days
             Console.WriteLine(result);
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var numbers = instructions.Select((x, i) => new { Id = x, Delta = i })
                                 .Where(x => x.Id != "x")

@@ -14,16 +14,17 @@ namespace Days
             DayNumber = 3;
             Title = "Toboggan Trajectory";
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             var lines = Read_file();
             width = lines.First().Length;
             field = lines.ToList();
         }
 
-        public override void Part1() => Console.WriteLine($"Trees encountered: {Get_trees_in_slope(3, 1)}");
+        protected override void Part1() => Console.WriteLine($"Trees encountered: {Get_trees_in_slope(3, 1)}");
 
-        public override void Part2()
+        protected override void Part2()
         {
             var trees_1_1 = Get_trees_in_slope(1, 1);
             var trees_3_1 = Get_trees_in_slope(3, 1);

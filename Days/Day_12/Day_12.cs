@@ -13,12 +13,13 @@ namespace Days
             Title = "Rain Risk";
             DayNumber = 12;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             instructions = Read_file().Select(Instruction.Create_from_input_string).ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var current_direction = Wind_direction.E;
             var current_coordinate = new Coordinate(0, 0);
@@ -43,7 +44,7 @@ namespace Days
             Console.WriteLine(current_coordinate.Manhattan_distance);
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var current_ship_coordinate = new Coordinate(0, 0);
             var current_waitpoint_coordinate = new Coordinate(10, 1);

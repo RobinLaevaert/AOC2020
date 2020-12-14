@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace AOC2020.Shared
 {
@@ -13,20 +12,16 @@ namespace AOC2020.Shared
     {
         public string Title;
         public int DayNumber;
-
-
-        public Day()
-        {
-        }
-        public void PrintInfo()
-        {
-            Console.WriteLine($"{DayNumber}. {Title}");
-        }
+        public string Info => $"{DayNumber}. {Title}";
+        
+        protected Day() { }
 
         public void HandleSelect()
         {
+            Console.Clear();
+            Console.WriteLine(Info);
+            Console.WriteLine();
             Console.WriteLine("Do you want to solve Part 1 or 2?");
-
             switch (Console.ReadLine())
             {
                 case "1":
@@ -60,22 +55,22 @@ namespace AOC2020.Shared
             Console.Clear();
         }
 
-        
-        public virtual IEnumerable<string> Read_file()
+
+        protected virtual IEnumerable<string> Read_file()
         {
             var resources = Assembly.GetCallingAssembly().GetManifestResourceNames().ToList();
-            using Stream stream = Assembly.GetCallingAssembly().GetManifestResourceStream(resources.Single(x => x.EndsWith("input.txt")));
-            using StreamReader reader = new StreamReader(stream);
+            using var stream = Assembly.GetCallingAssembly().GetManifestResourceStream(resources.Single(x => x.EndsWith("input.txt")));
+            using var reader = new StreamReader(stream ?? throw new InvalidOperationException());
             return reader.ReadAllLines().ToArray();
         }
 
-        public abstract void Gather_input();
+        protected abstract void Gather_input();
 
-        public abstract void Part1();
+        protected abstract void Part1();
 
-        public abstract void Part2();
+        protected abstract void Part2();
 
-        public static void Performance_logging(params Action[] actions) 
+        private static void Performance_logging(params Action[] actions) 
         {
             Stopwatch stopwatch = new();
             Dictionary<string, double> timings_per_action = new();
@@ -90,16 +85,15 @@ namespace AOC2020.Shared
                 action();
                 stopwatch.Stop();
                 timings_per_action.Add(action.GetMethodInfo().Name, (double)stopwatch.ElapsedTicks / TimeSpan.TicksPerMillisecond);
-                Console.WriteLine();
+                if(action_name != "Gather_input")
+                    Console.WriteLine();
             }
-            Console.WriteLine();
+            stopwatch.Reset();
             Console.WriteLine("Performance metrics");
             foreach (var timing in timings_per_action)
             {
                 Console.WriteLine($"{timing.Key}: {timing.Value} ms");
             }
-            Console.WriteLine();
-            stopwatch.Reset();
         }
     }
 }

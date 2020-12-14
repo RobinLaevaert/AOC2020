@@ -1,5 +1,4 @@
 ﻿using AOC2020.Shared;
-using Day_07;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,8 @@ namespace Days
             DayNumber = 7;
             Title = "Handy Haversacks";
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             var temp = Read_file();
             Descriptions = temp.Select(Description.Create).ToList();
@@ -24,7 +24,7 @@ namespace Days
             Bags = tempDict.Select(Bag_1.Create_From_Key_value_pair).ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var count = Bags.Count(x => x.Child_elements.Any(y => y.Color == "shiny gold"));
             var loop = true;
@@ -50,7 +50,7 @@ namespace Days
             Console.WriteLine(shiny_bags_count);
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var gold_bag = Descriptions.Single(x => x.Parent_bag.color == "shiny gold");
             Console.WriteLine(CalculateAllChildBags(gold_bag));

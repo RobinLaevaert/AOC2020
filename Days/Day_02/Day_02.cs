@@ -1,5 +1,4 @@
 ﻿using AOC2020.Shared;
-using Day_02;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,14 +15,15 @@ namespace Days
             DayNumber = 2;
             Title = "Password Philosophy";
         }
-        public override void Part1()
+
+        protected override void Part1()
         {
             var results = input.Select(x => x.Is_valid_part1());
             var count_valid_passwords = results.Count(x => x == true);
             Console.WriteLine($"Amount of correct passwords: {count_valid_passwords}");
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var results = input.Select(x => x.Is_valid_part2());
             var count_valid_passwords = results.Count(x => x == true);
@@ -31,7 +31,7 @@ namespace Days
         }
 
 
-        public override void Gather_input()
+        protected override void Gather_input()
         {
             var string_input = Read_file().ToList();
             input = string_input.Select(x =>

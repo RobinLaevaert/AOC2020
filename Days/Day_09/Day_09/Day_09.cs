@@ -13,18 +13,19 @@ namespace Days
             Title = "Encoding Error";
             DayNumber = 9;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             input_stream = Read_file().Select(long.Parse).ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var faulty_value = Get_faulty_value(input_stream, 5);
             Console.WriteLine(faulty_value);
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var faulty_value = Get_faulty_value(input_stream, 25);
             foreach (var item in input_stream.Select((value, i) => new { i, value }))

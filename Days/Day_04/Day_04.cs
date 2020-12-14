@@ -17,7 +17,8 @@ namespace Days
             DayNumber = 4;
             Title = "Passport Processing";
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             StringBuilder sb = new();
             List<string> strings = new ();
@@ -42,7 +43,7 @@ namespace Days
                                 .ToDictionary(y => y[0], y => y[1])).ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var validPasswords = dictionary.Where(x => x.Count >= 7)
                 .Count(x => x.ContainsKey("byr") &&
@@ -55,7 +56,7 @@ namespace Days
             Console.WriteLine($"There are {validPasswords} validapasswords");
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var regex = new Regex(@"(#{1})([0-9a-f]{6}|[0-9a-f]{6})$");
             var validPasswords = dictionary.Where(x => x.Count >= 7)

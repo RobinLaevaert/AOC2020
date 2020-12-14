@@ -13,7 +13,8 @@ namespace Days
             Title = "Binary Boarding";
             DayNumber = 5;
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             boarding_passes = Read_file().Select(x => new Boarding_pass(new string(x
                                             .Substring(0, 7)
@@ -24,7 +25,7 @@ namespace Days
 
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var number_of_rows = 127;
             var number_of_columns = 7;
@@ -35,7 +36,7 @@ namespace Days
             Console.WriteLine($"Max Seat Id: {max_seat_id}");
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var number_of_rows = 127;
             var number_of_columns = 7;

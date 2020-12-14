@@ -13,7 +13,8 @@ namespace Days
             DayNumber = 8;
             Title = "Handheld Halting";
         }
-        public override void Gather_input()
+
+        protected override void Gather_input()
         {
             task_list = Read_file().Select(x =>
             {
@@ -23,13 +24,13 @@ namespace Days
             }).ToList();
         }
 
-        public override void Part1()
+        protected override void Part1()
         {
             var result = Computer.Go_brr(task_list, out _);
             Console.WriteLine(result);
         }
 
-        public override void Part2()
+        protected override void Part2()
         {
             var possible_changes = task_list.Select((x, i) => new Tuple<Task, int, int>(x.Item1, x.Item2, i)).Where(x => x.Item1 is Task.nop or Task.jmp).Select(x => x.Item3);
             var succesful_run = false;
