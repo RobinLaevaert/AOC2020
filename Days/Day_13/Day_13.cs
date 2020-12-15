@@ -7,8 +7,8 @@ namespace Days
 {
     public class Day_13 : Day
     {
-        public int starting_point;
-        public List<string> instructions;
+        private int starting_point;
+        private List<string> instructions;
         public Day_13()
         {
             Title = "Shuttle Search";
@@ -17,7 +17,7 @@ namespace Days
 
         protected override void Gather_input()
         {
-            var temp = Read_file();
+            var temp = Read_file().ToList();
             starting_point = int.Parse(temp.First());
             instructions = temp.Last().Split(',').ToList();
         }

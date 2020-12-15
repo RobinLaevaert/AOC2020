@@ -25,6 +25,7 @@ namespace AOC2020
             new Day_12(),
             new Day_13(),
             new Day_14(),
+            new Day_15()
         };
         static void Main(string[] args)
         {
