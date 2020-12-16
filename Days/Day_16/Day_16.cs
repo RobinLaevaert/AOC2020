@@ -7,7 +7,7 @@ namespace Days
 {
     public class Day_16 : Day
     {
-        private List<Ticket_type> ranges;
+        private List<Category> categories;
         private List<List<int>> nearby_tickets;
         private List<int> your_ticket;
         public Day_16()
@@ -18,7 +18,7 @@ namespace Days
 
         protected override void Gather_input()
         {
-            ranges = new();
+            categories = new();
             nearby_tickets = new();
             your_ticket = new();
             var temp = Read_file().ToList();
@@ -40,14 +40,14 @@ namespace Days
                 switch (mode)
                 {
                     case "ranges":
-                        var ticket_type = new Ticket_type();
-                        ticket_type.ticket_type = line.Split(':')[0];
+                        var ticket_type = new Category();
+                        ticket_type.Name = line.Split(':')[0];
                         var line_split = line.Split(':')[1].Trim();
                         var ranges_split = line_split.Split(" or ");
                         var tuples = ranges_split.Select(x => x.Split('-').Select(int.Parse))
                             .Select(x => new Tuple<int, int>(x.First(), x.Last())).ToList();
                         ticket_type.Ranges = tuples;
-                        ranges.Add(ticket_type);
+                        categories.Add(ticket_type);
                         break;
                         
                     case "your_ticket":
@@ -65,43 +65,50 @@ namespace Days
         {
             var all_ticket_numbers = nearby_tickets.SelectMany(x => x);
             var invalid_tickets = all_ticket_numbers
-                .Where(x => !ranges.SelectMany(x => x.Ranges).Any(y => y.Item1 <= x && x <= y.Item2)).ToList();
+                .Where(x => !categories.SelectMany(category => category.Ranges).Any(range => range.Item1 <= x && x <= range.Item2)).ToList();
             Console.WriteLine(invalid_tickets.Sum());
         }
 
         protected override void Part2()
         {
             // Get all wrong tickets and remove them (Pt1)
-            var all_ticket_numbers = nearby_tickets.SelectMany(x => x);
+            var all_ticket_numbers = nearby_tickets.SelectMany(number => number);
             var invalid_tickets_numbers = all_ticket_numbers
-                .Where(x => !ranges.SelectMany(x => x.Ranges).Any(y => y.Item1 <= x && x <= y.Item2)).ToList();
-            nearby_tickets.RemoveAll(x => invalid_tickets_numbers.Any(x.Contains));
+                .Where(x => !categories.SelectMany(category => category.Ranges).Any(range => range.Item1 <= x && x <= range.Item2)).ToList();
+            nearby_tickets.RemoveAll(ticket => invalid_tickets_numbers.Any(ticket.Contains));
             
             // Add your own ticket since this can be used to determine correct types
             nearby_tickets.Add(your_ticket);
             
             // Select all the possible types for each index for each ticket
-            var possible_types = nearby_tickets.Select(q => q.Select(x =>
-                ranges.Where(y => y.Ranges.Any(z => z.Item1 <= x && x <= z.Item2)).Select(y => y.ticket_type)
+            var possible_categories = nearby_tickets.Select(ticket => ticket.Select(number =>
+                categories.Where(category => category.Ranges.Any(z => z.Item1 <= number && number <= z.Item2)).Select(category => category.Name)
                     .ToList()).ToArray());
             // Aggregate them by getting the intersection if each line of each type
-            var current_possible_types = possible_types.Aggregate((x, y) => x.Select((z, i) => y[i].Intersect(z).ToList()).ToArray());
+            var current_possible_categories = possible_categories.Aggregate(
+                (possible_categories, next_possible_categories) => possible_categories
+                    .Select((category_names, index) => next_possible_categories[index].Intersect(category_names).ToList()).ToArray());
             // All the types which are certain => only 1 possible
-            var taken_types = current_possible_types.Select(x => x.Count == 1 ? x.Single() : "").ToList();
+            var taken_types = current_possible_categories.Select(possible_category_names =>
+                possible_category_names.Count == 1 ? possible_category_names.Single() : "").ToList();
             
             while (taken_types.Any(x => x == ""))
             {
                 // Remove all possible types from the list which are certainly used for another index
-                current_possible_types = current_possible_types.Select(x => x.Where(z => !taken_types.Contains(z)).ToList()).ToArray();
+                current_possible_categories = current_possible_categories.Select(possible_category_names =>
+                        possible_category_names.Where(category_name => !taken_types.Contains(category_name)).ToList())
+                    .ToArray();
                 // All the types which are certain at this moment => only 1 possible
-                var current_certain_types = current_possible_types.Select(x => x.Count == 1 ? x.Single() : "").ToList();
+                var current_certain_types = current_possible_categories.Select(possible_category_names =>
+                    possible_category_names.Count == 1 ? possible_category_names.Single() : "").ToList();
                 // Aggregate them with the already known types
                 taken_types = new List<List<string>>() {current_certain_types, taken_types}.Aggregate((x, y) =>
                     x.Select((z, i) => z == "" ? y[i] : z).ToList());
             }
             //Select all values from your ticket with a type that starts with 'departure'
-            var departure_types = taken_types.Select((x, i) => new {type = x, index = i})
-                .Where(x => x.type.StartsWith("departure")).Select(x => x.index).Select(x => your_ticket[x]);
+            var departure_types = taken_types.Select((category_name, i) => new {Name = category_name, index = i})
+                .Where(Category => Category.Name.StartsWith("departure")).Select(Category => Category.index)
+                .Select(index => your_ticket[index]);
             Console.WriteLine(departure_types.Select(Convert.ToInt64).Aggregate((x, y) => x * y));
         }
     }

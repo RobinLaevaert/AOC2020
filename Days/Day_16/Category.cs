@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Days
 {
-    public class Ticket_type
+    public class Category
     {
-        public string ticket_type { get; set; }
+        public string Name { get; set; }
         public List<Tuple<int,int>> Ranges { get; set; }
     }
 }
