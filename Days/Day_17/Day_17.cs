@@ -138,10 +138,9 @@ namespace Days
                         for (var l = -1; l <= 1; l++)
                         {
                             if (i == 0 && j == 0 && k == 0 && l == 0) continue;
-                            field.TryGetValue
-                            ((keyValuePair.Key.Item1 + i, keyValuePair.Key.Item2 + j,
-                                keyValuePair.Key.Item3 + k, keyValuePair.Key.Item4 + l), out var isTrue);
-                            if (isTrue) count++;
+                            field.TryGetValue((keyValuePair.Key.Item1 + i, keyValuePair.Key.Item2 + j,
+                                keyValuePair.Key.Item3 + k, keyValuePair.Key.Item4 + l), out var is_active);
+                            if (is_active) count++;
                         }
                     }
                 }
